@@ -166,3 +166,21 @@ JOIN sex ON province_names.province_id = sex.province_id
 WHERE m > f
 
 _________________________________________________________________________________________________________________________
+
+Source : https://www.leetcode.com/            Difficulty : Medium                                num = 9
+
+Question : 
+
+Write an SQL query to find employees who have the highest salary in each of the departments.
+
+Return the result table in any order.
+
+Solution :
+
+SELECT department.name AS DEPARTMENT, employee.name AS Employee, SALARY
+FROM employee
+JOIN department ON employee.departmentid = department.id
+WHERE (department.id, Salary) IN (SELECT departmentid, MAX(salary) FROM employee
+                                 GROUP BY departmentid)
+                                 
+_________________________________________________________________________________________________________________________
