@@ -5,3 +5,6 @@ NOTE :
    ex :  SUM( CASE
                   WHEN     THEN  
                   END) AS col_name
+                 
+2) In exercise 11, remember to seperate With tables with commas except the last one before SELECT, 
+                  and no need to write WITH again, start directly with name AS
