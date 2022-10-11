@@ -228,3 +228,30 @@ SELECT admission_date, admission_day,
 FROM p
 
 _____________________________________________________________________________________________________________________________
+
+Source : https://www.leetcode.com/            Difficulty : Medium                                num = 12
+
+
+Question : 
+
+(stock_name, operation_day) is the primary key for this table.
+The operation column is an ENUM of type ('Sell', 'Buy')
+Each row of this table indicates that the stock which has stock_name had an operation on the day operation_day with the price.
+It is guaranteed that each 'Sell' operation for a stock has a corresponding 'Buy' operation in a previous day. It is also guaranteed that each 'Buy' operation for a stock has a corresponding 'Sell' operation in an upcoming day.
+
+
+Solution : 
+
+WITH buy AS 
+(SELECT stock_name, SUM(price) AS bought
+            FROM stocks
+ WHERE operation = "Buy"
+GROUP BY stock_name
+),
+sell AS (SELECT stock_name, SUM(price) AS sold
+        FROM stocks
+        WHERE operation = "Sell"
+        GROUP BY stock_name)
+SELECT buy.stock_name, sell.sold - buy.bought AS capital_gain_loss
+FROM buy
+JOIN sell ON buy.stock_name = sell.stock_name
