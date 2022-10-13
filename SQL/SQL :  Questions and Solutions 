@@ -255,3 +255,38 @@ sell AS (SELECT stock_name, SUM(price) AS sold
 SELECT buy.stock_name, sell.sold - buy.bought AS capital_gain_loss
 FROM buy
 JOIN sell ON buy.stock_name = sell.stock_name
+
+_______________________________________________________________________________________________________________________
+
+Source : https://www.leetcode.com/            Difficulty : Hard                                num = 13
+
+
+Question : 
+
+The cancellation rate is computed by dividing the number of canceled (by client or driver) requests with unbanned users by the total number of requests with unbanned users on that day.
+
+Write a SQL query to find the cancellation rate of requests with unbanned users (both client and driver must not be banned) each day between "2013-10-01" and "2013-10-03". Round Cancellation Rate to two decimal points.
+Return the result table in any order.
+
+
+Solution :
+
+WITH t AS (SELECT trips.id, trips.client_id, trips.driver_id, trips.status, Trips.request_at, l_1.banned AS b_1, l_2.banned AS b_2, 
+
+SUM(CASE 
+    WHEN l_1.banned = "No" AND l_2.banned = "No" AND Trips.status LIKE "cance%" THEN 1
+    ELSE 0
+    END ) AS cancel,
+SUM(CASE 
+    WHEN l_1.banned = "No" AND l_2.banned = "No" THEN 1
+    ELSE 0
+    END ) AS trip
+
+FROM Trips
+LEFT JOIN Users AS l_1 ON trips.driver_id = L_1.users_id
+LEFT JOIN Users AS l_2 ON trips.client_id = l_2.users_id
+WHERE trips.request_at BETWEEN "2013-10-01" AND "2013-10-03"
+GROUP BY trips.request_at)
+
+SELECT request_at AS Day, ROUND(cancel/trip, 2) AS "Cancellation Rate"
+FROM t
