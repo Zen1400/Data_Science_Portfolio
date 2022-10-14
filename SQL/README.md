@@ -11,3 +11,5 @@ NOTE :
                   and no need to write WITH again, start directly with name AS
 
 3) In exercise 13, Columns Aliases are disallowed in WHERE and CASE
+
+4) Excercise 14, DATE(TIMESTAMP_column) to get time from a timestamp column, and BETWEEN "2010-09-10" AND "2010-09-18"   DONT forget quotes
