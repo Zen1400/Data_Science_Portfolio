@@ -290,3 +290,39 @@ GROUP BY trips.request_at)
 
 SELECT request_at AS Day, ROUND(cancel/trip, 2) AS "Cancellation Rate"
 FROM t
+
+
+_________________________________________________________________________________________________________________________________
+
+Source : https://www.sqlpad.io/            Difficulty : Hard                                num = 14
+
+
+Question : 
+
+Write a query to return the number of good days and bad days in May 2020 based on number of daily rentals.
+Return the results in one row with 2 columns from left to right: good_days, bad_days.
+good day: > 100 rentals.
+bad day: <= 100 rentals.
+Hint (For users already know OUTER JOIN), you can use dates table
+Hint: be super careful about datetime columns.
+Hint: this problem could be tricky, feel free to explore the rental table and take a look at some data.
+
+
+Answer : 
+
+WITH rent_day AS 
+(SELECT COUNT(*) AS rent, DATE(rental_ts) AS day 
+ FROM rental
+WHERE DATE(rental_ts)BETWEEN '2020-05-01' AND '2020-05-31'
+GROUP BY day)
+
+SELECT SUM(CASE
+  WHEN rent > 100 THEN 1
+  ELSE 0
+  END) AS good_days, 31 - SUM(CASE
+  WHEN rent > 100 THEN 1
+  ELSE 0
+  END) AS bad_days
+  FROM rent_day
+
+_____________________________________________________________________________________________________________________________
