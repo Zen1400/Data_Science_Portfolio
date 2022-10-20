@@ -326,3 +326,24 @@ SELECT SUM(CASE
   FROM rent_day
 
 _____________________________________________________________________________________________________________________________
+
+Source : https://techtfq.com   (Olyimpics)       Difficulty : Medium                                num = 15
+
+
+Question : 
+
+Write a SQL query to return the Olympic Games which had the highest participating countries and the lowest participating countries.
+
+
+
+Answer : 
+
+WITH n AS (SELECT games, COUNT(DISTINCT region) AS c 
+		  FROM history
+		  JOIN regions ON history.noc = regions.noc
+		  GROUP BY games)
+SELECT DISTINCT CONCAT(first_value(games) OVER(ORDER BY c), '-', first_value(c) OVER(ORDER BY c)) AS lowest,
+CONCAT(first_value(games) OVER(ORDER BY c DESC), '-', first_value(c) OVER(ORDER BY c DESC)) AS highest
+FROM n
+
+________________________________________________________________________________________________________________________________
