@@ -347,3 +347,24 @@ CONCAT(first_value(games) OVER(ORDER BY c DESC), '-', first_value(c) OVER(ORDER 
 FROM n
 
 ________________________________________________________________________________________________________________________________
+
+Source : https://techtfq.com   (Olyimpics)       Difficulty : Medium                                num = 16
+
+
+Question : 
+
+SQL query to return the list of countries who have been part of every Olympics games.
+
+
+Answer :
+
+
+WITH t AS (SELECT region, COUNT(DISTINCT games) AS total FROM history
+JOIN regions ON history.noc = regions.noc
+GROUP BY region
+ORDER BY total DESC)
+
+SELECT region, total FROM t
+WHERE total = (SELECT COUNT(DISTINCT games) FROM history)
+
+________________________________________________________________________________________________________________________________
