@@ -368,3 +368,40 @@ SELECT region, total FROM t
 WHERE total = (SELECT COUNT(DISTINCT games) FROM history)
 
 ________________________________________________________________________________________________________________________________
+
+Source : https://techtfq.com   (Olyimpics)       Difficulty : Medium                                num = 17
+
+
+Question : 
+
+Identify the sport which was played in all summer olympics.
+ 
+Answer :
+
+SELECT DISTINCT sport, COUNT(DISTINCT games) FROM history
+WHERE season = 'Summer'
+GROUP BY sport
+HAVING COUNT(DISTINCT games) = (SELECT COUNT(DISTINCT games) FROM history
+							   WHERE season = 'Summer')
+                              
+________________________________________________________________________________________________________________________________
+
+Source : https://techtfq.com   (Olyimpics)       Difficulty : Hard                                num = 18
+
+
+Question :
+
+Write a SQL query to get the ratio of male and female participants
+
+Answer :
+
+WITH sex_count AS (SELECT sex, COUNT(*) AS cnt FROM history
+				  GROUP BY sex),
+max_min AS (SELECT *, ROW_NUMBER() OVER(ORDER BY cnt DESC) AS r FROM sex_count),
+x AS (SELECT cnt FROM max_min
+	 WHERE r = 1),
+n AS (SELECT cnt FROM max_min
+	 WHERE r = 2)
+SELECT CONCAT('1 : ', x.cnt::decimal/n.cnt) FROM x,n
+	 
+				 
