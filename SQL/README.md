@@ -13,3 +13,6 @@ NOTE :
 3) In exercise 13, Columns Aliases are disallowed in WHERE and CASE
 
 4) Excercise 14, DATE(TIMESTAMP_column) to get time from a timestamp column, and BETWEEN "2010-09-10" AND "2010-09-18"   DONT forget quotes
+
+5) #18, I learnt that you don't have to join With tables, you can just FROM w_1, w_2
+        Also,  to get the division in decimal  num_1::decimal / num_2
