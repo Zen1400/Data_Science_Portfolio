@@ -405,3 +405,47 @@ n AS (SELECT cnt FROM max_min
 SELECT CONCAT('1 : ', x.cnt::decimal/n.cnt) FROM x,n
 	 
 				 
+________________________________________________________________________________________________________________________________               
+Source : https://techtfq.com   (Olyimpics)       Difficulty : Medium                                num = 19
+
+
+Question : 
+
+SQL query to fetch the top 5 athletes who have won the most gold medals.
+
+
+Answer :
+
+WITH m AS (SELECT name, COUNT(*) AS gold_medals
+		   FROM history
+		  WHERE medal = 'Gold'
+		  GROUP BY name),
+ranked as (SELECT m.name, gold_medals, history.team,
+		   DENSE_RANK() OVER(ORDER BY gold_medals DESC) AS r
+		   FROM m
+		  JOIN history ON m.name = history.name)
+SELECT DISTINCT name, team, gold_medals FROM ranked
+WHERE r <= 5
+ORDER BY gold_medals DESC
+________________________________________________________________________________________________________________________________  
+
+Source : https://techtfq.com   (Olyimpics)       Difficulty : Medium                                num = 20
+
+Question :
+
+Write a SQL query to fetch the top 5 most successful countries in olympics. (Success is defined by no of medals won).
+
+
+Answer : 
+
+WITH m AS (SELECT team, COUNT(*) medals FROM history
+		  WHERE medal IN ('Gold', 'Silver', 'Bronze')
+		  GROUP BY team),
+r AS (SELECT team, medals,
+	  DENSE_RANK() OVER(ORDER BY medals DESC) rank
+	  FROM m)
+SELECT team, medals, rank from r
+WHERE rank <= 5
+ORDER BY medals DESC
+
+________________________________________________________________________________________________________________________________ 
