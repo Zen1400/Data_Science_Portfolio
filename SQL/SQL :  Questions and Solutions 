@@ -449,3 +449,33 @@ WHERE rank <= 5
 ORDER BY medals DESC
 
 ________________________________________________________________________________________________________________________________ 
+
+Source : https://techtfq.com   (Olyimpics)       Difficulty : Medium                                num = 21
+
+Question :
+
+Write a SQL query to list down the  total gold, silver and bronze medals won by each country.
+
+
+Answer :
+
+WITH m AS (SELECT region, CASE
+						WHEN medal = 'Gold' THEN 1
+						ELSE 0
+						END Gold,
+			 CASE
+						WHEN medal = 'Silver' THEN 1
+						ELSE 0
+						END  Silver,
+			 CASE
+						WHEN medal = 'Bronze' THEN 1
+						ELSE 0
+						END  Bronze
+FROM history
+JOIN regions ON history.noc = regions.noc		  )
+SELECT region, SUM(Gold) Gold, SUM(Bronze) Bronze, SUM(Silver) Silver
+FROM m
+GROUP BY region
+ORDER BY Gold DESC
+
+________________________________________________________________________________________________________________________________ 
