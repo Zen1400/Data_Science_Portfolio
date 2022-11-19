@@ -479,3 +479,48 @@ GROUP BY region
 ORDER BY Gold DESC
 
 ________________________________________________________________________________________________________________________________ 
+
+Source : https://techtfq.com   (Olyimpics)       Difficulty : Hard                                num = 22
+
+
+Question :
+
+Write SQL query to display for each Olympic Games, which country won the highest gold, silver and bronze medals.
+
+
+Answer : 
+
+WITH m AS (SELECT games, region, SUM(CASE
+						WHEN medal = 'Gold' THEN 1
+						ELSE 0
+						 END)
+						AS gold,
+					  SUM(CASE
+					    WHEN medal = 'Silver' THEN 1
+						ELSE 0
+						END )
+						AS silver,
+					  SUM(CASE
+					    WHEN medal = 'Bronze' THEN 1
+						ELSE 0
+						END)
+						AS bronze
+FROM history
+JOIN regions ON history.noc = regions.noc
+GROUP BY games, region),
+ms AS (SELECT games, region || ' - ' || gold AS  n_g,
+region || ' - ' || silver AS n_s,
+region || ' - ' || bronze AS n_b,
+RANK() OVER(PARTITION BY games ORDER BY gold DESC) AS gr,
+RANK() OVER(PARTITION BY games ORDER BY silver DESC) AS sr,
+RANK() OVER(PARTITION BY games ORDER BY bronze DESC) AS br
+FROM m),
+g AS (SELECT games, n_g FROM ms WHERE gr = 1),
+s AS (SELECT games, n_s FROM ms WHERE sr = 1),
+b AS (SELECT games, n_b FROM ms WHERE br = 1)
+SELECT g.games, n_g AS max_gold, n_s AS max_silver, n_b AS max_bronze
+FROM g
+JOIN s ON g.games = s.games
+JOIN b ON g.games = b.games
+
+________________________________________________________________________________________________________________________________ 
