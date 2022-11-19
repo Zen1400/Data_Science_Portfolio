@@ -16,3 +16,5 @@ NOTE :
 
 5) #18, I learnt that you don't have to join With tables, you can just FROM w_1, w_2
         Also,  to get the division in decimal  num_1::decimal / num_2
+        
+6) #22, the syntax to use SUM(CASE.......END) AS col_name
