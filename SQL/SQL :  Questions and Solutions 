@@ -524,3 +524,41 @@ JOIN s ON g.games = s.games
 JOIN b ON g.games = b.games
 
 ________________________________________________________________________________________________________________________________ 
+
+Source : https://techtfq.com   (Olyimpics)       Difficulty : Hard                                num = 23
+
+
+Question :
+
+Identify which country won the most gold, most silver and most bronze medals in each olympic games.
+
+
+Answer : 
+
+WITH c AS (SELECT games, region, SUM(CASE
+						 WHEN medal = 'Bronze' THEN 1 ELSE 0 END ) AS bronze,
+					  SUM(CASE
+						 WHEN medal = 'Silver' THEN 1 ELSE 0 END ) AS silver,
+					  SUM(CASE
+						 WHEN medal = 'Gold' THEN 1 ELSE 0 END ) AS gold
+FROM history JOIN regions ON history.noc = regions.noc
+GROUP BY games, region
+ORDER BY games),
+o AS (SELECT games, region, bronze, silver, gold,
+DENSE_RANK() OVER(PARTITION BY games ORDER BY bronze DESC) AS b,
+DENSE_RANK() OVER(PARTITION BY games ORDER BY silver DESC) AS s,
+DENSE_RANK() OVER(PARTITION BY games ORDER BY gold DESC) AS g
+FROM c
+ORDER BY games),
+mb AS (SELECT games, CONCAT(region, ' - ', bronze) AS max_bronze FROM o
+WHERE b = 1),
+ms AS (SELECT games, CONCAT(region, ' - ', silver) AS max_silver FROM o
+WHERE s = 1),
+mg AS (SELECT games, CONCAT(region, ' - ', gold) AS max_gold FROM o
+WHERE g = 1)
+SELECT mb.games, max_bronze, max_silver, max_gold FROM mb
+JOIN ms ON mb.games = ms.games
+JOIN mg ON mb.games = mg.games
+ORDER BY games
+
+__________________________________________________________________________________________________________________
