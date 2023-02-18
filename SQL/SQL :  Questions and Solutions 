@@ -562,3 +562,31 @@ JOIN mg ON mb.games = mg.games
 ORDER BY games
 
 __________________________________________________________________________________________________________________
+
+SOURCE : ACE The Data Science        Google      Hard                  num : 24
+
+
+Question : 
+
+Write a query to obtain the sum of the odd-numbered and even-numbered measurements on a particular day, in two different columns. Refer to the Example Output below for the output format.
+
+Solution :
+
+WITH main AS(SELECT *,
+ROW_NUMBER() OVER(PARTITION BY TO_CHAR(measurement_time, 'DD-MM-YYYY') ORDER BY measurement_time ) r
+FROM measurements),
+e AS (SELECT DATE_TRUNC('day', measurement_time) tr,
+SUM(measurement_value) even_sum
+FROM main
+WHERE r % 2 = 0
+GROUP BY tr),
+o AS (SELECT DATE_TRUNC('day', measurement_time) tr,
+SUM(measurement_value) odd_sum
+FROM main
+WHERE r % 2 != 0
+GROUP BY tr)
+SELECT
+o.tr measurement_day,
+odd_sum, even_sum
+FROM o JOIN e ON e.tr = o.tr
+ORDER BY o.tr

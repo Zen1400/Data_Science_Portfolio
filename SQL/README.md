@@ -18,3 +18,8 @@ NOTE :
         Also,  to get the division in decimal  num_1::decimal / num_2
         
 6) #22, the syntax to use SUM(CASE.......END) AS col_name
+
+7) #24, instead of creating a column or CTE I used :
+                                                        ROW_NUMBER() OVER(PARTITION BY TO_CHAR(measurement_time, 'DD-MM-YYYY')
+                                                  Also ;   Date_Trunc('day', measurement_time)   will give the time as 00:00:00  at the end
+                                                  
