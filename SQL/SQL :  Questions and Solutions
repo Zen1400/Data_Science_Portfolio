@@ -592,7 +592,7 @@ FROM o JOIN e ON e.tr = o.tr
 ORDER BY o.tr
 __________________________________________________________________________________________________________________________________________________________
 
-Source : Code Wars https://www.codewars.com/kata/5818bde9559ff58bd90004a2/solutions/sql
+Source : Code Wars https://www.codewars.com/kata/5818bde9559ff58bd90004a2/solutions/sql          Hard                num = 25
 
 Question : 
 Find the actors who acted the most together from the following tables.
