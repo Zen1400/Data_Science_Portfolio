@@ -23,3 +23,5 @@ NOTE :
                                                         ROW_NUMBER() OVER(PARTITION BY TO_CHAR(measurement_time, 'DD-MM-YYYY')
                                                   Also ;   Date_Trunc('day', measurement_time)   will give the time as 00:00:00  at the end
                                                   
+8) #25, I used a self join by joining the table that contains actor_id and film_id on itself under the condition that t1.film_id = t2.film_id AND t1.actor_id < t2.actor_id
+So I got the combination of all pair actors who have acted together in the same film. Next, I grouped by actor1 and actor2 and counted the occurences to get the result.                                                 
