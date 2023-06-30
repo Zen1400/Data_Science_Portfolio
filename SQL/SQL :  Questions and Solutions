@@ -590,3 +590,34 @@ o.tr measurement_day,
 odd_sum, even_sum
 FROM o JOIN e ON e.tr = o.tr
 ORDER BY o.tr
+__________________________________________________________________________________________________________________________________________________________
+
+Source : Code Wars https://www.codewars.com/kata/5818bde9559ff58bd90004a2/solutions/sql          Hard                num = 25
+
+Question : 
+Find the actors who acted the most together from the following tables.
+
+
+Answer :
+
+WITH main AS (SELECT actor1.actor_id a1, actor2.actor_id a2, actor1.film_id,
+CONCAT(name1.first_name, ' ', name1.last_name) first_actor,
+CONCAT(name2.first_name, ' ', name2.last_name) second_actor,
+title
+FROM film_actor actor1
+JOIN film_actor actor2 ON actor1.film_id = actor2.film_id AND 
+      actor1.actor_id < actor2.actor_id
+JOIN actor name1 ON actor1.actor_id = name1.actor_id
+JOIN actor name2 ON actor2.actor_id = name2.actor_id
+JOIN film ON actor1.film_id = film.film_id),
+t AS (SELECT first_actor, second_actor, COUNT(*) together
+FROM main
+GROUP BY first_actor, second_actor
+ORDER BY together DESC
+LIMIT 1)
+SELECT t.first_actor, t.second_actor, main.title
+FROM t
+JOIN main ON main.first_actor = t.first_actor
+AND main.second_actor = t.second_actor
+ORDER BY title
+_________________________________________________________________________________________________________________________________________________
