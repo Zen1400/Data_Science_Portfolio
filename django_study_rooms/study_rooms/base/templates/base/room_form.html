@@ -1,0 +1,15 @@
+<!-- Form POST method sends data back to View-->
+{% extends 'main.html' %}
+
+{% block content %}
+
+<div>
+  <form method="POST" action="">
+    {% csrf_token %}
+    {{form.as_p}}          <!--as_p  will make input as a paragraph and form is the class in forms.py which is an instant of ModelForm -->
+    <input type="submit" value="Submit">
+  </form>
+</div>
+
+
+{% endblock %}
