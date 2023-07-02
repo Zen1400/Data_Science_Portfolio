@@ -7,16 +7,14 @@
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 
-// Replace with your network credentials
-const char* ssid = "Xperia XA1 Ultra_a82e";
-const char* password = "zeinzein";
+// Network credentials
+const char* ssid = "my_network";
+const char* password = "my_password";
 
 #define DHTPIN 2     // Digital pin D4 connected to the DHT sensor
 
-// Uncomment the type of sensor in use:
 #define DHTTYPE    DHT11     // DHT 11
-//#define DHTTYPE    DHT22     // DHT 22 (AM2302)
-//#define DHTTYPE    DHT21     // DHT 21 (AM2301)
+
 
 DHT dht(DHTPIN, DHTTYPE);         //Instantiate a DHTobject with the type and pin defined earlier
 
@@ -34,6 +32,11 @@ unsigned long previousMillis = 0;    // will store last time DHT was updated
 // Updates DHT readings every 10 seconds
 const long interval = 10000;  
 
+
+// PROGREM, to store in the flash memory instead of the RAM. R"rawliteral to be able to copy all code without having to escape quotes
+
+// The XMLHttpRequest object can be used to exchange data with a web server behind the scenes. 
+// This means that it is possible to update parts of a web page, without reloading the whole page
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE HTML><html>
 <head>
