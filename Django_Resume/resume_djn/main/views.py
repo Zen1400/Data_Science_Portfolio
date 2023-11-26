@@ -5,7 +5,7 @@ from .models import (
 		Blog,
 		Portfolio,
 		Testimonial,
-		Certificate
+		Education
 	)
 
 from django.views import generic
@@ -22,12 +22,12 @@ class IndexView(generic.TemplateView):
 		context = super().get_context_data(**kwargs)
 
 		testimonials = Testimonial.objects.filter(is_active=True)
-		certificates = Certificate.objects.filter(is_active=True)
+		education = Education.objects.filter(is_active=True)
 		blogs = Blog.objects.filter(is_active=True)
 		portfolio = Portfolio.objects.filter(is_active=True)
 
 		context["testimonials"] = testimonials
-		context["certificates"] = certificates
+		context["education"] = education
 		context["blogs"] = blogs
 		context["portfolio"] = portfolio
 		return context
