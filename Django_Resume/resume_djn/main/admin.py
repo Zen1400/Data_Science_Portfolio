@@ -8,7 +8,7 @@ from . models import (
     Media,
     Portfolio,
     Blog,
-    Certificate,
+    Education,
     Skill
     )
 
@@ -39,7 +39,7 @@ class BlogAdmin(admin.ModelAdmin):
     list_display = ('id','name','is_active')
     readonly_fields = ('slug',)
 
-@admin.register(Certificate)
+@admin.register(Education)
 class CertificateAdmin(admin.ModelAdmin):
     list_display = ('id','name')
 
