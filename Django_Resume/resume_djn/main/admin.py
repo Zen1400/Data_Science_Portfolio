@@ -40,7 +40,7 @@ class BlogAdmin(admin.ModelAdmin):
     readonly_fields = ('slug',)
 
 @admin.register(Education)
-class CertificateAdmin(admin.ModelAdmin):
+class EducationAdmin(admin.ModelAdmin):
     list_display = ('id','name')
 
 @admin.register(Skill)
