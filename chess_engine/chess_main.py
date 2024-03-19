@@ -40,10 +40,9 @@ def main() :
 
     square_selected = () # keep track of last square selected by the user
     player_clicks = [] # keep track of player clicks, two tuples (1,2), ((1,4))
-
     while running :
 
-
+        row, col = 0, 0
 
         for e in p.event.get() :
             if e.type ==  p.QUIT :
@@ -54,6 +53,7 @@ def main() :
                 location = p.mouse.get_pos() # x,y coordinates of mouse
                 col = int(location[0] // SQ_SIZE)
                 row = int(location[1] // SQ_SIZE)
+
 
                 # undo if player clicks on the same square twice
                 if square_selected == (row, col) :
@@ -86,16 +86,27 @@ def main() :
                 gs.board = gs.history[i]
 
 
+        if player_clicks :
+            draw_game_state(screen, gs, player_clicks)
+            clock.tick(MAX_FPS)
+            p.display.update()
 
-        draw_game_state(screen, gs)
-        clock.tick(MAX_FPS)
-        p.display.update()
+        elif len(gs.log) > 1 :
+            draw_game_state(screen, gs, gs.log[-1])
+            clock.tick(MAX_FPS)
+            p.display.update()
 
+        else :
+            draw_game_state(screen, gs, [])
+            clock.tick(MAX_FPS)
+            p.display.update()
 
-def draw_game_state(screen, gs) :
+def draw_game_state(screen, gs, player_clicks) :
     """Responsible for graphics of a current game state"""
     draw_board(screen)
+    highlight(screen, player_clicks)
     draw_pieces(screen, gs.board)
+
 
 
 
@@ -121,6 +132,14 @@ def draw_pieces(screen, board) :
             if piece != '--' :
                 screen.blit(IMAGES[piece], p.Rect(c * SQ_SIZE, r * SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
+
+def highlight(screen,square_selected):
+    if type(square_selected) == list and len(square_selected) == 1:
+
+        p.draw.rect(screen, (253,253,125),  p.Rect((square_selected[0][1])* SQ_SIZE, (square_selected[0][0])*SQ_SIZE, SQ_SIZE, SQ_SIZE))
+    elif type(square_selected) == str :
+        p.draw.rect(screen, (253,253,125),  p.Rect((int(square_selected[0]))* SQ_SIZE, (int(square_selected[1]))*SQ_SIZE, SQ_SIZE, SQ_SIZE))
+        p.draw.rect(screen, (253,253,125),  p.Rect((int(square_selected[2]))* SQ_SIZE, (int(square_selected[3]))*SQ_SIZE, SQ_SIZE, SQ_SIZE))
 
 if __name__ == "__main__":
     main()
