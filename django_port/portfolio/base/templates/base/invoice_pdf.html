@@ -19,31 +19,34 @@
       <form method="POST" action="">
         {% csrf_token %}
 
-        <div class="row">
+        <div class="row ">
           <div class="col-6">
-            <div class="p-3 h-100"> <!-- First large element -->
+            <div class="p-0 m-0 h-100"> <!-- First large element -->
+              <h4>Sender</h4>
               {{ form.sender|as_crispy_field }}
             </div>
           </div>
           <div class="col-6">
             <div class="row h-33">
               <div class="col-12">
-                <div class="p-3 h-100"> <!-- Upper smaller element -->
-                  <h2>Invoice Number</h2>
+                <div class="p-0 m-0 h-100"> <!-- Upper smaller element -->
+                  <h4>Invoice Number</h4>
                   {{ form.identifier|as_crispy_field }}
                 </div>
               </div>
             </div>
             <div class="row h-33">
               <div class="col-12">
-                <div class="p-3 h-100"> <!-- Middle smaller element -->
+                <div class="p-0 m-0 h-100"> <!-- Middle smaller element -->
+                  <h4>Invoice Date</h4>
                   {{ form.invoice_date|as_crispy_field }}
                 </div>
               </div>
             </div>
             <div class="row h-33">
               <div class="col-12">
-                <div class="p-3 h-100">  <!-- Lower smaller element -->
+                <div class="p-0 m-0 h-100">  <!-- Lower smaller element -->
+                  <h4>Due Date</h4>
                   {{ form.due_date|as_crispy_field }}
                 </div>
               </div>
@@ -51,23 +54,150 @@
           </div>
         </div>
 
-        {% comment %} <div class="row">
-
+        <div class="row ">           <!-- second row -->
           <div class="col-6">
-            {{ form.to|as_crispy_field }}
+            <h4>To</h4>
+            {{ form.to|as_crispy_field}}
           </div>
-          <div class="col-6">
+          <div class="col-2 ">
 
+            <h4>Balance Due</h4>
           </div>
+            <div class="col-2">
+              {{ form.total_amount|as_crispy_field }}
+            </div>
 
-        </div> {% endcomment %}
+        </div>
 
-        {% comment %} {{ form|crispy }} {% endcomment %}
-        <input type="submit">
+        <h4>Items</h4>
+
+
+        <div id="invoice-items-container">
+          <div class="row invoice-item-row">
+              <div class="col-8">
+                  <input type="text" class="form-control" name="description[]" placeholder="Description">
+              </div>
+              <div class="col-1">
+                  <input type="number" class="form-control unit-price" name="unit_price[]" placeholder="Unit Price" step="0.01">
+              </div>
+              <div class="col-1">
+                  <input type="number" class="form-control quantity" name="quantity[]" placeholder="Quantity">
+              </div>
+              <div class="col-1">
+                  <input type="text" class="form-control total" name="total[]" placeholder="Total" readonly>
+              </div>
+              <div class="col-1">
+                  <button type="button" class="btn btn-danger remove-item">Remove</button>
+              </div>
+          </div>
+      </div>
+
+      <button type="button" id="add-item" class="btn btn-primary mt-3">Add Item</button>
+
+      <div class="row mt-4">
+          <div class="col-8 text-end">
+              <strong>Invoice Total:</strong>
+          </div>
+          <div class="col-2">
+              <input type="text" id="invoice-total" class="form-control" name="invoice_total" placeholder="0.00" readonly>
+          </div>
+      </div>
+
+        <br>
+
+        <div class="footer p-0 m-0">
+          <input type="submit">
+        </div>
+
+
+
+
       </form>
 
     </div>
     <!-- Invoice Form -->
+
+<!-- Include Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const invoiceItemsContainer = document.getElementById('invoice-items-container');
+        const addItemButton = document.getElementById('add-item');
+        const invoiceTotalInput = document.getElementById('invoice-total');
+
+        // Function to calculate total for each item row
+        function calculateRowTotal(row) {
+            const unitPrice = row.querySelector('.unit-price').value;
+            const quantity = row.querySelector('.quantity').value;
+            const total = row.querySelector('.total');
+
+            const calculatedTotal = (unitPrice * quantity).toFixed(2);
+            total.value = calculatedTotal;
+
+            calculateInvoiceTotal();
+        }
+
+        // Function to calculate the total sum of all item totals
+        function calculateInvoiceTotal() {
+            let invoiceTotal = 0.0;
+            const allTotals = document.querySelectorAll('.total');
+            allTotals.forEach(function (total) {
+                invoiceTotal += parseFloat(total.value) || 0;
+            });
+            invoiceTotalInput.value = invoiceTotal.toFixed(2);
+            document.getElementById('{{ form.total_amount.auto_id }}').value = invoiceTotal.toFixed(2);
+        }
+
+        // Event listener to add a new row
+        addItemButton.addEventListener('click', function () {
+            const newRow = document.createElement('div');
+            newRow.classList.add('row', 'invoice-item-row');
+            newRow.innerHTML = `
+                <div class="col-3">
+                    <input type="text" class="form-control" name="description[]" placeholder="Description">
+                </div>
+                <div class="col-2">
+                    <input type="number" class="form-control unit-price" name="unit_price[]" placeholder="Unit Price" step="0.01">
+                </div>
+                <div class="col-2">
+                    <input type="number" class="form-control quantity" name="quantity[]" placeholder="Quantity">
+                </div>
+                <div class="col-2">
+                    <input type="text" class="form-control total" name="total[]" placeholder="Total" readonly>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-danger remove-item">Remove</button>
+                </div>
+            `;
+            invoiceItemsContainer.appendChild(newRow);
+
+            // Attach event listeners to the new inputs
+            newRow.querySelector('.unit-price').addEventListener('input', function () {
+                calculateRowTotal(newRow);
+            });
+            newRow.querySelector('.quantity').addEventListener('input', function () {
+                calculateRowTotal(newRow);
+            });
+        });
+
+        // Event delegation for removing rows
+        invoiceItemsContainer.addEventListener('click', function (event) {
+            if (event.target.classList.contains('remove-item')) {
+                event.target.closest('.invoice-item-row').remove();
+                calculateInvoiceTotal();
+            }
+        });
+
+        // Attach event listeners to the initial row inputs
+        invoiceItemsContainer.querySelectorAll('.unit-price, .quantity').forEach(function (input) {
+            input.addEventListener('input', function () {
+                calculateRowTotal(input.closest('.row'));
+            });
+        });
+    });
+</script>
 
 
 

@@ -16,12 +16,19 @@ class InvoiceForm(forms.ModelForm):
         model = Invoice
         fields = '__all__'          # what you want to output in the html file
         labels = {
-            'identifier' : ''     # To remove field's name
+            'identifier' : '',
+            'invoice_date' : '',
+            'due_date' : '',
+            'sender' : '',
+            'total_amount' : '',
+            'to' : '',
+            # To remove field's name
         }
 
         widgets = {'due_date': DateInput(),
                    'invoice_date': DateInput(),
-                   'sender' : forms.Textarea(attrs={'rows' :10, 'cols':2}),
-                   'to' : forms.Textarea(attrs={'size' : 1})
+                   'sender' : forms.Textarea(attrs={'rows' :10}),
+                   'to' : forms.Textarea(attrs={'size' : 1}),
+                   'total_amount': forms.NumberInput(attrs={'readonly': 'readonly'}),
 
                    }
