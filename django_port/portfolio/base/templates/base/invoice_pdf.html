@@ -1,6 +1,6 @@
  <!-- base/templates/base/invoice_pdf.html -->
   {% load crispy_forms_tags %}
-  {% comment %} {% load static %} {% endcomment %}
+  {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,11 +12,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <!-- Custom CSS -->
     {% comment %} <link rel="stylesheet" href="{% static 'css/invoice.css' %}"> {% endcomment %}
+
 </head>
 <body>
     <h1>Create Invoice</h1>
     <div class="container">
-      <form method="POST" action="">
+      <form method="POST">
         {% csrf_token %}
 
         <div class="row ">
@@ -86,10 +87,11 @@
               <div class="col-1">
                   <input type="text" class="form-control total" name="total[]" placeholder="Total" readonly>
               </div>
-              <div class="col-1">
+              <div class="col-1 ">
                   <button type="button" class="btn btn-danger remove-item">Remove</button>
               </div>
-          </div>
+              <br>
+        </div>
       </div>
 
       <button type="button" id="add-item" class="btn btn-primary mt-3">Add Item</button>
@@ -121,7 +123,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
 
-<script>
+{% comment %} <script>
     document.addEventListener('DOMContentLoaded', function () {
         const invoiceItemsContainer = document.getElementById('invoice-items-container');
         const addItemButton = document.getElementById('add-item');
@@ -155,21 +157,21 @@
             const newRow = document.createElement('div');
             newRow.classList.add('row', 'invoice-item-row');
             newRow.innerHTML = `
-                <div class="col-3">
-                    <input type="text" class="form-control" name="description[]" placeholder="Description">
-                </div>
-                <div class="col-2">
-                    <input type="number" class="form-control unit-price" name="unit_price[]" placeholder="Unit Price" step="0.01">
-                </div>
-                <div class="col-2">
-                    <input type="number" class="form-control quantity" name="quantity[]" placeholder="Quantity">
-                </div>
-                <div class="col-2">
-                    <input type="text" class="form-control total" name="total[]" placeholder="Total" readonly>
-                </div>
-                <div class="col-2">
-                    <button type="button" class="btn btn-danger remove-item">Remove</button>
-                </div>
+              <div class="col-8">
+                  <input type="text" class="form-control" name="description[]" placeholder="Description">
+              </div>
+              <div class="col-1">
+                  <input type="number" class="form-control unit-price" name="unit_price[]" placeholder="Unit Price" step="0.01">
+              </div>
+              <div class="col-1">
+                  <input type="number" class="form-control quantity" name="quantity[]" placeholder="Quantity">
+              </div>
+              <div class="col-1">
+                  <input type="text" class="form-control total" name="total[]" placeholder="Total" readonly>
+              </div>
+              <div class="col-1">
+                  <button type="button" class="btn btn-danger remove-item">Remove</button>
+              </div>
             `;
             invoiceItemsContainer.appendChild(newRow);
 
@@ -197,8 +199,10 @@
             });
         });
     });
-</script>
-
+</script> {% endcomment %}
+{% comment %} <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script> {% endcomment %}
+<script src="{% static 'js/invoice.js' %}"></script>
 
 
 </body>

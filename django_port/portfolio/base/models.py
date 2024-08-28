@@ -40,13 +40,10 @@ class Invoice(models.Model):
 
 
     identifier = models.CharField(primary_key=True, max_length=50)
-    sender = models.CharField(max_length=255, choices = sender_choices, default=English)
+    sender = models.CharField(max_length=255, default=English)
     to = models.CharField(max_length=250)
     invoice_date = models.DateField()
     due_date = models.DateField()
-    item_description = models.CharField(max_length=255, default="New item")
-    item_quantity = models.IntegerField(default=1)
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2, default = 0)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default = 0)
 
     def __str__(self):

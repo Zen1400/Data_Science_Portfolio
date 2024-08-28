@@ -7,10 +7,6 @@ class DateInput(forms.DateInput):
 
 
 class InvoiceForm(forms.ModelForm):
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     for field_name, field in self.fields.items():
-    #         field.name = ''  # This should remove the label
 
     class Meta:
         model = Invoice
@@ -27,7 +23,7 @@ class InvoiceForm(forms.ModelForm):
 
         widgets = {'due_date': DateInput(),
                    'invoice_date': DateInput(),
-                   'sender' : forms.Textarea(attrs={'rows' :10}),
+                #    'sender' : forms.Textarea(attrs={'rows' :10}),
                    'to' : forms.Textarea(attrs={'size' : 1}),
                    'total_amount': forms.NumberInput(attrs={'readonly': 'readonly'}),
 
