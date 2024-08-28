@@ -25,3 +25,7 @@ body {
   width: 100px; /* Adjust width as needed */
   background-color: lightcoral; /* Just for visual purposes */
 }
+
+.item-block {
+  line-height: 1.8;
+}
