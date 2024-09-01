@@ -76,6 +76,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'portfolio.wsgi.application'
 
+WKHTMLTOPDF_PATH = '/usr/bin/wkhtmltopdf'
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases

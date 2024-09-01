@@ -39,12 +39,12 @@ class Invoice(models.Model):
 
 
 
-    identifier = models.CharField(primary_key=True, max_length=50)
-    sender = models.CharField(max_length=255, default=English)
-    to = models.CharField(max_length=250)
+    invoice_number = models.CharField(primary_key=True, max_length=50)
+    company_info = models.CharField(max_length=800)
+    client_info = models.CharField(max_length=800)
     invoice_date = models.DateField()
     due_date = models.DateField()
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default = 0)
 
     def __str__(self):
-        return self.identifier
+        return self.invoice_number

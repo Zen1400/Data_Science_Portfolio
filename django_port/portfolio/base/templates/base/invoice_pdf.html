@@ -24,7 +24,7 @@
           <div class="col-6">
             <div class="p-0 m-0 h-100"> <!-- First large element -->
               <h4>Sender</h4>
-              {{ form.sender|as_crispy_field }}
+              {{ form.sender }}
             </div>
           </div>
           <div class="col-6">
@@ -32,7 +32,7 @@
               <div class="col-12">
                 <div class="p-0 m-0 h-100"> <!-- Upper smaller element -->
                   <h4>Invoice Number</h4>
-                  {{ form.identifier|as_crispy_field }}
+                  {{ form.identifier }}
                 </div>
               </div>
             </div>
@@ -40,7 +40,7 @@
               <div class="col-12">
                 <div class="p-0 m-0 h-100"> <!-- Middle smaller element -->
                   <h4>Invoice Date</h4>
-                  {{ form.invoice_date|as_crispy_field }}
+                  {{ form.invoice_date }}
                 </div>
               </div>
             </div>
@@ -48,7 +48,7 @@
               <div class="col-12">
                 <div class="p-0 m-0 h-100">  <!-- Lower smaller element -->
                   <h4>Due Date</h4>
-                  {{ form.due_date|as_crispy_field }}
+                  {{ form.due_date }}
                 </div>
               </div>
             </div>
@@ -58,14 +58,14 @@
         <div class="row ">           <!-- second row -->
           <div class="col-6">
             <h4>To</h4>
-            {{ form.to|as_crispy_field}}
+            {{ form.to }}
           </div>
           <div class="col-2 ">
 
             <h4>Balance Due</h4>
           </div>
             <div class="col-2">
-              {{ form.total_amount|as_crispy_field }}
+              {{ form.total_amount }}
             </div>
 
         </div>
@@ -202,7 +202,7 @@
 </script> {% endcomment %}
 {% comment %} <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script> {% endcomment %}
-<script src="{% static 'js/invoice.js' %}"></script>
+{% comment %} <script src="{% static 'js/invoice.js' %}"></script> {% endcomment %}
 
 
 </body>

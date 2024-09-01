@@ -1,0 +1,251 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .invoice-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+
+        .invoice-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .invoice-header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .invoice-header p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #888;
+        }
+
+        .invoice-details {
+            margin-bottom: 20px;
+        }
+
+        .invoice-details input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .invoice-table {
+            width: 100%;
+            margin-bottom: 20px;
+            border-collapse: collapse;
+        }
+
+        .invoice-table th,
+        .invoice-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .invoice-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .invoice-total {
+            text-align: right;
+            font-size: 20px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .add-row-btn,
+        .remove-row-btn {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="invoice-container">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="invoice-header">
+              <h1>Invoice</h1>
+              <div class="row">
+                <div class="col-4">
+                  <p>Invoice Number: <input type="text" name="invoice_number" value="{{ invoice_number }}"></p>
+                </div>
+                <div class="col-4">
+                  <p>Invoice Date: <input type="date" name="invoice_date" value="{{ invoice_date }}"></p>
+                </div>
+                <div class="col-4">
+                  <p>Due Date: <input type="date" name="due_date" value="{{ due_date }}"></p>
+                </div>
+
+              </div>
+
+            </div>
+
+            {% comment %} <div class="invoice-details">
+                <h3>Company Information</h3>
+
+                <input type="text" name="company_name" placeholder="Company Name" value="{{ company_name }}">
+                <input type="text" name="company_address" placeholder="Company Address" value="{{ company_address }}">
+                <input type="email" name="company_email" placeholder="Email" value="{{ company_email }}">
+                <input type="text" name="company_phone" placeholder="Phone Number" value="{{ company_phone }}">
+            </div> {% endcomment %}
+            <div class="invoice-details">
+              <div class="row">
+                <div class="col-6">
+                  <h3>Company Information</h3>
+                  <textarea name="company_info" placeholder="Company Information" rows="12" cols="55">{{ company_info }}</textarea>
+                </div>
+
+                <div class="col-6">
+                  <h3>Client Information</h3>
+                  <textarea name="client_info" placeholder="Client Information" rows="12" cols="55">{{ client_info }}</textarea>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+            {% comment %} <div class="invoice-details">
+                <h3>Client Information</h3>
+                <input type="text" name="client_name" placeholder="Client Name" value="{{ client_name }}">
+                <input type="text" name="client_address" placeholder="Client Address" value="{{ client_address }}">
+                <input type="email" name="client_email" placeholder="Client Email" value="{{ client_email }}">
+                <input type="text" name="client_phone" placeholder="Client Phone Number" value="{{ client_phone }}">
+            </div> {% endcomment %}
+
+            <table class="invoice-table" id="invoiceTable">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td><input type="text" name="description[]" placeholder="Product or Service Description" value="{{ item.description }}"></td>
+                        <td><input type="number" name="unit_price[]" placeholder="0.00" class="unit-price" onchange="calculateRowTotal(this)" value="{{ item.unit_price }}"></td>
+                        <td><input type="number" name="quantity[]" placeholder="1" class="quantity" onchange="calculateRowTotal(this)" value="{{ item.quantity }}"></td>
+                        <td><input type="number" name="item_total[]" placeholder="0.00" readonly class="item-total" value="{{ item.total }}"></td>
+                        <td><button type="button" class="btn btn-danger remove-row-btn" onclick="removeRow(this)">Remove</button></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td><input type="text" name="description[]" placeholder="Product or Service Description"></td>
+                        <td><input type="number" name="unit_price[]" placeholder="0.00" class="unit-price" onchange="calculateRowTotal(this)" value="0.00"></td>
+                        <td><input type="number" name="quantity[]" placeholder="1" class="quantity" onchange="calculateRowTotal(this)" value="1"></td>
+                        <td><input type="number" name="item_total[]" placeholder="0.00" readonly class="item-total" value="0.00"></td>
+                        <td><button type="button" class="btn btn-danger remove-row-btn" onclick="removeRow(this)">Remove</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-primary add-row-btn" onclick="addRow()">Add Item</button>
+
+            <div class="invoice-total">
+                Total Amount: <input type="number" step="0.01" name="total_amount" value="{{ total_amount }}" readonly id="totalAmount">
+            </div>
+
+            <div class="invoice-details">
+              <h3>Notes</h3>
+              <textarea name="notes" id="notes" rows="4" cols="75">
+                {{ notes }}
+              </textarea>
+            </div>
+            {% comment %} <div class="invoice-details">
+                <h3>Bank Information</h3>
+                <input type="text" name="bank_name" placeholder="Bank Name" value="{{ bank_name }}">
+                <input type="text" name="bank_account" placeholder="Bank Account Number" value="{{ bank_account }}">
+                <input type="text" name="swift_bic" placeholder="SWIFT/BIC" value="{{ swift_bic }}">
+            </div> {% endcomment %}
+
+            <button type="submit" class="submit-btn">Generate PDF</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ensure the total amount is calculated initially
+            calculateTotalAmount();
+        });
+
+        function calculateRowTotal(element) {
+            const row = element.closest('tr');
+            const unitPrice = parseFloat(row.querySelector('.unit-price').value) || 0;
+            const quantity = parseInt(row.querySelector('.quantity').value) || 0;
+            const total = unitPrice * quantity;
+            row.querySelector('.item-total').value = total.toFixed(2);
+
+            calculateTotalAmount();
+        }
+
+        function calculateTotalAmount() {
+            let totalAmount = 0;
+            document.querySelectorAll('.item-total').forEach(function (itemTotal) {
+                totalAmount += parseFloat(itemTotal.value) || 0;
+            });
+            document.getElementById('totalAmount').value = totalAmount.toFixed(2);
+        }
+
+        function addRow() {
+            const table = document.getElementById('invoiceTable').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td><input type="text" name="description[]" placeholder="Product or Service Description"></td>
+                <td><input type="number" step="0.01" name="unit_price[]" placeholder="0.00" class="unit-price" onchange="calculateRowTotal(this)" value="0.00"></td>
+                <td><input type="number" name="quantity[]" placeholder="1" class="quantity" onchange="calculateRowTotal(this)" value="1"></td>
+                <td><input type="number" step="0.01" name="item_total[]" placeholder="0.00" readonly class="item-total" value="0.00"></td>
+                <td><button type="button" class="btn btn-danger remove-row-btn" onclick="removeRow(this)">Remove</button></td>
+            `;
+        }
+
+        function removeRow(button) {
+            const row = button.closest('tr');
+            row.remove();
+            calculateTotalAmount();
+        }
+    </script>
+</body>
+
+</html>
