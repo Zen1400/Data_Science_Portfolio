@@ -1,0 +1,110 @@
+*{
+  padding: 0;
+  margin: 0;
+  color: white;
+}
+body{
+  background-color: rgb(10, 58, 35);
+  display: flex;
+}
+.img-box{
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px rgb(117, 135, 70) solid;
+}
+
+.img-box img{
+  width: 110%;
+  flex-shrink: 0%;
+}
+.profile{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.profile h4{
+  font-size: 20px;
+}
+.menu{
+  background-color: rgb(18, 44, 13);
+  width: 260px;
+  height: 100vh;
+}
+ul {
+  list-style: none;
+}
+ul li a {
+
+  display: flex;
+  text-decoration: none;
+  padding: 6px;
+  border-radius: 15px;
+  display: flex;
+  gap: 12px;
+  transition: .4s;
+  height: 60px;
+}
+ul li a:hover, .big-box .box-square:hover{
+  background-color: rgb(108, 137, 88);
+}
+ul li a i{
+  color: greenyellow;
+  font-size: 20px;
+}
+.inner-content{
+  background-color: rgb(29, 42, 24);
+  width: 100%;
+}
+
+.title{
+  background-color: rgb(38, 131, 98);
+  border-radius: 12px;
+
+}
+.title p{
+  padding: 0px 460px;
+  font-size: 30px;
+  font-family: fantasy;
+  color: rgb(43, 214, 208);
+  width: 100%;
+}
+.big-box{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.big-box .box-square{
+  background-color: rgb(8, 102, 86);
+  height: 120px;
+  flex-basis: 160px;
+  flex-grow: 1;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 16px 4px;
+
+}
+
+.info{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 6px;
+}
+
+.info p, span {
+  font-size: 18px;
+}
+
+.big-box .box-square i{
+  color: greenyellow;
+  font-size: 40px;
+}

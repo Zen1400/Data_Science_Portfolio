@@ -19,7 +19,7 @@ def home(request) :
 
 def invoice_management(request) :
 
-    return render(request, 'base/invoice_management.html')
+    return render(request, 'base/test.html')
 
 
 

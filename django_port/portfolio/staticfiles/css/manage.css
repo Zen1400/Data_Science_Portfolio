@@ -4,13 +4,11 @@
   margin: 0;
   color: white;
 }
-
 body{
   background-color: rgb(18, 44, 13);
   display: flex;
 }
 
-/* class that represents the image */
 .img-box{
   width: 50px;
   height: 50px;
@@ -19,7 +17,6 @@ body{
   border-radius: 50%;
   overflow: hidden;
   border: 3px rgb(117, 135, 70) solid;
-
 }
 
 .img-box img{
@@ -33,22 +30,17 @@ body{
   align-items: center;
   gap: 4px;
 }
-
 .profile h4{
   font-size: 20px;
 }
-
 .menu{
-  background-color: rgb(58, 63, 26);
+  background-color: rgb(153, 37, 2);
   width: 260px;
   height: 100vh;
 }
-
 ul {
   list-style: none;
 }
-
-
 ul li a {
 
   display: flex;
@@ -59,32 +51,28 @@ ul li a {
   gap: 12px;
   transition: .4s;
   height: 60px;
-
 }
-
 ul li a:hover{
   background-color: rgb(105, 96, 96);
 }
-
-
 ul li a i{
   color: greenyellow;
   font-size: 20px;
-}
+} */
 
 
-.content{
-  background-color: white;
+.inner-content{
+  background-color: rgb(17, 12, 12);
   width: 100%;
 }
 
 .title{
-  background-color: rgb(16, 236, 159);
-}
+  background-color: rgb(46, 189, 139);
 
+}
 .title p{
   padding: 0px 460px;
   font-size: 30px;
   font-family: fantasy;
-  color: black;
+  color: rgb(164, 22, 22);
 }
