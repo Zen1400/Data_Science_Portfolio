@@ -8,6 +8,18 @@
     <title>Invoice</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
+    {% comment %} Control visibility, don't show mentioned classes {% endcomment %}
+    <style>
+      @media print {
+          .remove-row-btn,
+          .add-row-btn,
+          .submit-btn {
+              display: none;
+          }
+          /* Hide other elements conditionally */
+      }
+      </style>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -157,7 +169,6 @@
                         <th>Unit Price</th>
                         <th>Quantity</th>
                         <th>Total</th>
-                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -167,7 +178,7 @@
                         <td><input type="number" name="unit_price[]" placeholder="0.00" class="unit-price" onchange="calculateRowTotal(this)" value="{{ item.unit_price }}"></td>
                         <td><input type="number" name="quantity[]" placeholder="1" class="quantity" onchange="calculateRowTotal(this)" value="{{ item.quantity }}"></td>
                         <td><input type="number" name="item_total[]" placeholder="0.00" readonly class="item-total" value="{{ item.total }}"></td>
-                        <td><button type="button" class="btn btn-danger remove-row-btn" onclick="removeRow(this)">Remove</button></td>
+                        <button type="button" class="btn btn-danger remove-row-btn" onclick="removeRow(this)">Remove</button>
                     </tr>
                     {% empty %}
                     <tr>
