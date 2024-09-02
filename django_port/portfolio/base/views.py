@@ -15,42 +15,13 @@ def home(request) :
 
     return render(request, 'base/home.html')
 
-# def invoice_pdf(request) :
-
-#     form = InvoiceForm()
-#     if request.method == 'POST' :
-#         print(request.POST)
-#         form = InvoiceForm(request.POST)
-#         if form.is_valid() :
-
-#             invoice = form.save()
-#             print("this is invoice")
-#             print(invoice)
-#             print("this is form")
-#             print(form)
-
-#             context = form
-#             # html_string = render_to_string('base/invoice_pdf.html', context)
-#             # # Generate the PDF using WeasyPrint
-#             # html = HTML(string=html_string)
-#             # pdf = html.write_pdf()
-#             # # Create the HTTP response with the generated PDF
-#             # response = HttpResponse(pdf, content_type='application/pdf')
-#             # response['Content-Disposition'] = f'attachment; filename="invoice_{invoice.identifier}.pdf"'
-#             # return response
-#             pdf= render_to_pdf('base/invoice_pdf.html', context)
-#             return HttpResponse(pdf, context_type = 'application/pdf')
-#         else:
-#             print(form.errors)
 
 
+def invoice_management(request) :
 
-    context = {'form' : form}
-    return render(request, 'base/invoice_pdf.html', context)
+    return render(request, 'base/invoice_management.html')
 
 
-
-# Last try
 
 
 def generate_invoice_pdf(request):
@@ -106,8 +77,17 @@ def generate_invoice_pdf(request):
             # 'swift_bic': swift_bic,
         }
 
-        if notes :
-            context["notes"] = notes
+        if invoice_number :
+            # save the invoice to the database
+            invoice = Invoice.objects.create(
+                invoice_number = invoice_number,
+                company_info = company_info,
+                client_info = client_info,
+                due_date = due_date,
+                invoice_date = invoice_date,
+                total_amount = total_amount
+
+            )
 
         # Render HTML
         html = render_to_string('base/simple_invoice.html', context)
