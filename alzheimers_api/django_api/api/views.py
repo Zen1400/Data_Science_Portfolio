@@ -1,9 +1,24 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from base.models import Item
+from .serializers import ItemSerializer
 
 @api_view(["GET"])
 def getData(request):
 
-    person = {"name" : 'Zein', 'age': 34}
+    items = Item.objects.all()
+    serializer = ItemSerializer(items, many=True)
 
-    return Response(person)
+    return Response(serializer.data)
+
+
+# add data (sent from frontend) view and validate it
+@api_view(['POST', 'GET'])
+def addItem(request) :
+
+    serializer = ItemSerializer(data = request.data) # request.data : sent from the frontend
+
+    if serializer.is_valid() :   # validate same like validating forms
+        serializer.save() # create new item in the database
+
+    return Response(serializer.data)
