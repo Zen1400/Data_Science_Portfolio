@@ -1,15 +1,12 @@
 from rest_framework import serializers
-from base.models import Item
+# from base.models import Item
 
-class ItemSerializer(serializers.ModelSerializer):
+# class ItemSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Item
-        fields = '__all__'
+#     class Meta:
+#         model = Item
+#         fields = '__all__'
 
-
-# serializers.py
-from rest_framework import serializers
 
 class PatientInputSerializer(serializers.Serializer):
     age = serializers.IntegerField(min_value=0, max_value=120, required=True)

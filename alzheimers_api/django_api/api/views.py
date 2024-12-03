@@ -1,34 +1,35 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from base.models import Item
-from .serializers import ItemSerializer
+# from base.models import Item
+# from .serializers import ItemSerializer
 from .forms import PatientForm
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import PatientForm
 from rest_framework.views import APIView
+from .model.predict import predict_alzheimers
 # import joblib
 # import numpy as np
 # from sklearn.preprocessing import StandardScaler, OneHotEncoder
 # from sklearn.compose import ColumnTransformer
-@api_view(["GET"])
-def getData(request):
+# @api_view(["GET"])
+# def getData(request):
 
-    items = Item.objects.all()
-    serializer = ItemSerializer(items, many=True)
+#     items = Item.objects.all()
+#     serializer = ItemSerializer(items, many=True)
 
-    return Response(serializer.data)
+#     return Response(serializer.data)
 
 
-# add data (sent from frontend) view and validate it
-@api_view(['POST', 'GET'])
-def addItem(request) :
+# # add data (sent from frontend) view and validate it
+# @api_view(['POST', 'GET'])
+# def addItem(request) :
 
-    serializer = ItemSerializer(data = request.data) # request.data : sent from the frontend
+#     serializer = ItemSerializer(data = request.data) # request.data : sent from the frontend
 
-    if serializer.is_valid() :   # validate same like validating forms
-        serializer.save() # create new item in the database
+#     if serializer.is_valid() :   # validate same like validating forms
+#         serializer.save() # create new item in the database
 
-    return Response(serializer.data)
+#     return Response(serializer.data)
 
 
 # from django.shortcuts import render
@@ -38,25 +39,50 @@ def addItem(request) :
 # from sklearn.preprocessing import StandardScaler, OneHotEncoder
 # from sklearn.compose import ColumnTransformer
 
-def patient_input(request):
-    result = None
-    if request.method == 'POST':
-        form = PatientForm(request.POST)
-        if form.is_valid():
-            # Extract form data
-            age = int(form.cleaned_data['age'])
-            bmi = form.cleaned_data['bmi']
-            smoker = int(form.cleaned_data['smoker'])
-            memory_problems = int(form.cleaned_data['memory_problems'])
-            family_history = int(form.cleaned_data['family_history'])
+# def patient_input(request):
+#     result = None
+#     if request.method == 'POST':
+#         form = PatientForm(request.POST)
+#         if form.is_valid():
+#             # Extract form data
+#             age = int(form.cleaned_data['age'])
+#             bmi = form.cleaned_data['bmi']
+#             smoker = int(form.cleaned_data['smoker'])
+#             memory_problems = int(form.cleaned_data['memory_problems'])
+#             family_history = int(form.cleaned_data['family_history'])
 
-            # Prepare data for prediction
-            data = [[age, bmi, smoker, memory_problems, family_history]]
-            result = data
+#             # Prepare data for prediction
+#             data = [[age, bmi, smoker, memory_problems, family_history]]
+#             result = data
+#             # Redirect to the results page with the prediction
+#             return redirect('result_page', result=result)
+#     else:
+#         form = PatientForm()
+
+#     return render(request, 'patient_input.html', {'form': form, 'result': result})
+
+
+
+def result_page(request, result):
+    # Convert the result to an integer for rendering logic
+    prediction = int(result)
+
+    # Decide on the theme and image
+    if prediction == 1:
+        theme = {
+            'message': "The patient is likely to have Alzheimer's.",
+            'image': 'images/alzheimers_positive.jpg',
+            'alert_class': 'alert-danger'
+        }
     else:
-        form = PatientForm()
+        theme = {
+            'message': "The patient is unlikely to have Alzheimer's.",
+            'image': 'images/alzheimers_negative.jpg',
+            'alert_class': 'alert-success'
+        }
 
-    return render(request, 'patient_input.html', {'form': form, 'result': result})
+    return render(request, 'result.html', {'theme': theme})
+
 
 # def predict_alzheimer(data):
 #     # Load trained model
@@ -72,9 +98,9 @@ def patient_input(request):
 #     prediction = model.predict(processed_data)
 #     return "Positive" if prediction[0] == 1 else "Negative"
 
-def predict_alzheimers() :
 
-    return "You're fucked mate!!"
+
+
 
 from rest_framework import status
 from .serializers import PatientInputSerializer
@@ -100,10 +126,11 @@ class PatientInputAPIView(APIView):
         if serializer.is_valid():
             # Predict Alzheimer's using the validated data
             result = predict_alzheimers()      #serializer.validated_data
-            return render(request, 'patient_input.html', {
-                'form': serializer,
-                'result': result,  # Pass the result to the template
-            })
+            return redirect('result_page', result=result)
+            # return render(request, 'patient_input.html', {
+            #     'form': serializer,
+            #     'result': result,  # Pass the result to the template
+            # })
         else:
             # Re-render the form with validation errors
             return render(request, 'patient_input.html', {
