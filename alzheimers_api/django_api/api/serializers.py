@@ -1,19 +1,23 @@
 from rest_framework import serializers
-from base.models import Item
+# from base.models import Item
 
-class ItemSerializer(serializers.ModelSerializer):
+# class ItemSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = Item
-        fields = '__all__'
+#     class Meta:
+#         model = Item
+#         fields = '__all__'
 
 
-# serializers.py
-from rest_framework import serializers
+
 
 class PatientInputSerializer(serializers.Serializer):
-    age = serializers.IntegerField(min_value=0, max_value=120, required=True)
-    bmi = serializers.FloatField(min_value=0, required=True)
-    smoker = serializers.BooleanField(required=True)
-    memory_problems = serializers.BooleanField(required=True)
-    family_history = serializers.CharField(max_length=100, required=True)
+    FunctionalAssessment = serializers.FloatField()
+    ADL = serializers.FloatField()
+    MMSE = serializers.FloatField()
+    MemoryComplaints = serializers.IntegerField()  # Binary: 0 or 1
+    BehavioralProblems = serializers.IntegerField()  # Binary: 0 or 1
+    BMI = serializers.FloatField()
+    SleepQuality = serializers.FloatField()
+    PhysicalActivity = serializers.FloatField()
+    CholesterolTriglycerides = serializers.FloatField()
+    CholesterolHDL = serializers.FloatField()
