@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 from .forms import PatientForm
 from rest_framework.views import APIView
 from .model.predict import predict_alzheimers
+import pandas as pd
 # import joblib
 # import numpy as np
 # from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -118,15 +119,22 @@ from .serializers import PatientInputSerializer
 class PatientInputAPIView(APIView):
     def get(self, request, *args, **kwargs):
         # Render the HTML template for the user to input data
-        return render(request, 'patient_input.html')
+            form = PatientForm()
+            return render(request, 'patient_input.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         # Handle the form submission
         serializer = PatientInputSerializer(data=request.POST)
+
         if serializer.is_valid():
             # Predict Alzheimer's using the validated data
-            result = predict_alzheimers()      #serializer.validated_data
-            return redirect('result_page', result=result)
+            data = serializer.validated_data
+            df = pd.DataFrame([data])  # Create a single-row DataFrame
+            print(df)
+            print(df.columns)
+            print(df.dtypes)
+            return predict_alzheimers(df)      #serializer.validated_data
+            # return redirect('result_page', result=result)
             # return render(request, 'patient_input.html', {
             #     'form': serializer,
             #     'result': result,  # Pass the result to the template
