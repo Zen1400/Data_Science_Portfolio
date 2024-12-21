@@ -133,7 +133,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+#During deployment (when collectstatic runs), static files are copied from STATICFILES_DIRS and other
+# sources into STATIC_ROOT. This mismatch might cause Nginx to look in the wrong directory.
+
+# STATIC_URL = '/static/'
+
+# New solution to the image problem served by 80 and not 8000
+STATIC_URL = 'http://localhost:80/static/'
 
 
 # This tells Django where to find your static files during development
@@ -141,6 +147,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # This points to where collectstatic will gather files
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
