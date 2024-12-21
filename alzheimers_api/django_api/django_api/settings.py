@@ -136,9 +136,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 
-# I believe no need, it's for additional content static
+# This tells Django where to find your static files during development
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
+# This points to where collectstatic will gather files
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type

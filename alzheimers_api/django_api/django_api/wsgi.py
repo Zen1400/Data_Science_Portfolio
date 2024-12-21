@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+# I believe this was behind the modeul 'app' not found. Including it in the Dockerfile made it work
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'django_api.settings')
 
 application = get_wsgi_application()
